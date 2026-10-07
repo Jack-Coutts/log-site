@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>streak · Support</title>
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="icon.png" alt="">streak</a>
+    <nav class="nav"><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav>
+  </header>
+
+  <main class="doc">
+    <h1>Support</h1>
+    <p class="meta">How to use streak.</p>
+
+    <nav class="toc" aria-label="On this page">
+      <a href="#start">Getting started</a>
+      <a href="#log">Logging exercise</a>
+      <a href="#off">Sick days and holidays</a>
+      <a href="#types">Exercise types</a>
+      <a href="#stats">Stats and the heatmap</a>
+      <a href="#find">Finding a session</a>
+      <a href="#export">Reports, exports and new phones</a>
+    </nav>
+
+    <h2 id="start">Getting started</h2>
+    <p>The first time you open streak, tap <strong>Start fresh</strong>, or <strong>Import CSV</strong> to bring in history from the web Exercise Tracker.</p>
+    <p>There are two tabs: <strong>Exercise</strong> and <strong>Stats</strong>. The gear opens <strong>Settings</strong>, where you can change the appearance (light, dark or match your phone), manage exercise types, and export or import.</p>
+
+    <h2 id="log">Logging exercise</h2>
+    <ol>
+      <li>Tap <strong>Log exercise</strong>.</li>
+      <li>Tap what you did, or type it. A new name becomes a new type.</li>
+      <li>Type the minutes. Tap the date under them to pick another day.</li>
+      <li>Add a note if you like, then tap <strong>Save</strong>.</li>
+    </ol>
+    <div class="figure"><img class="phone" src="img/2-log.webp" alt="Logging a run of 45 minutes" width="660" height="1434" loading="lazy"></div>
+    <p>Tap any session to change it, or to delete it with <strong>Delete entry</strong> at the bottom.</p>
+    <p>Your <strong>streak</strong> is the number of days in a row you've exercised, up to today. Until you log something today, it counts up to yesterday.</p>
+
+    <h2 id="off">Sick days and holidays</h2>
+    <p>Pick <strong>Off sick</strong> or <strong>On holiday</strong> as the type. They take no minutes, and the <strong>until</strong> menu covers several days at once, up to a year. Days already marked are skipped.</p>
+    <p>A day off keeps your streak going without adding to it, never counts as a break, and stays out of your averages. On the heatmap, sick days are red and holidays blue.</p>
+
+    <h2 id="types">Exercise types</h2>
+    <p>streak starts with cycling, workout, squash, running, pilates and swimming. In <strong>Settings → Exercise types</strong>:</p>
+    <ul>
+      <li>Type in <strong>Add type</strong> to add one.</li>
+      <li>Tap a type to rename it. Every session of that type follows. Renaming to a type you already have merges them.</li>
+      <li>Press and hold a type to delete it. Only types with no sessions can be deleted.</li>
+    </ul>
+
+    <h2 id="stats">Stats and the heatmap</h2>
+    <p>The Stats tab shows your total time, then a heatmap of the year: one square per day, darker for more minutes (up to 45, 90, 135, then more). Use the arrows for earlier years, and tap a square to see that day.</p>
+    <div class="figure"><img class="phone" src="img/3-stats.webp" alt="The year heatmap" width="660" height="1434" loading="lazy"><img class="phone" src="img/5-numbers.webp" alt="Streaks, averages and time by exercise" width="660" height="1434" loading="lazy"></div>
+    <ul>
+      <li><strong>Streaks:</strong> your current and longest streak, your longest break, and the days you've exercised.</li>
+      <li><strong>Averages:</strong> minutes per session, and sessions and time per week, from your first session to your last.</li>
+      <li><strong>By exercise:</strong> your most frequent exercise, then time and sessions for each, and your sick and holiday days.</li>
+    </ul>
+
+    <h2 id="find">Finding a session</h2>
+    <p>On the Exercise tab, search by type or note, or choose a type from <strong>All types</strong>. Tap the calendar button next to the gear to browse by month: a dot marks each day with an entry, and tapping a day lists it, with a button to log exercise on that day.</p>
+
+    <h2 id="export">Reports, exports and new phones</h2>
+    <p>Everything is stored on your phone. Your phone's own backup, such as iCloud, includes it.</p>
+    <ul>
+      <li><strong>Share report</strong>, on the Stats tab, makes a PDF of your stats, heatmaps and full log.</li>
+      <li><strong>Settings → Export CSV</strong> saves every session as a CSV file, the web tracker's format: <code>date, exercise_type, duration_minutes, notes</code>. It opens in any spreadsheet.</li>
+      <li><strong>Settings → Import CSV</strong> reads a CSV file. If you already have sessions, choose <strong>Add to my history</strong>, which skips sessions you already have, or <strong>Replace everything</strong>.</li>
+    </ul>
+    <p>To move to a new phone, export a CSV on the old one and import it on the new one. If a file can't be imported, streak lists the lines that need fixing and changes nothing.</p>
+    <p><strong>Settings → Delete everything</strong> removes all your sessions and types from the phone, after asking.</p>
+
+    <h2>Still stuck?</h2>
+    <p><a href="https://github.com/Jack-Coutts/streak-site/issues">Open an issue</a>. Read how streak handles your data in the <a href="privacy.html">privacy policy</a>.</p>
+  </main>
+
+  <footer class="foot">
+    <span>© 2026 streak</span>
+    <nav><a href="support.html">Support</a><a href="privacy.html">Privacy</a><a href="https://github.com/Jack-Coutts/streak-site/issues">Contact</a></nav>
+  </footer>
+</div>
+</body>
+</html>

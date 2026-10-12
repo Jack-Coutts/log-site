@@ -44,7 +44,9 @@ jobs:
           # The review runs in a per-PR worktree of the local clone, which is
           # the T3 Code project, so follow-ups in the thread see the PR code.
           [ -d "$project/.git" ] || gh repo clone "$GITHUB_REPOSITORY" "$project"
-          git -C "$project" fetch --quiet origin "pull/$PR_NUMBER/head"
+          git -C "$project" fetch --quiet origin "$BASE_SHA" "pull/$PR_NUMBER/head"
+          git -C "$project" cat-file -e "$BASE_SHA^{commit}"
+          git -C "$project" cat-file -e "$HEAD_SHA^{commit}"
           if [ -d "$wt" ]; then
             git -C "$wt" checkout --quiet --detach "$HEAD_SHA"
           else
@@ -68,7 +70,7 @@ jobs:
             --project "$project" --worktree "$wt" --repo "$GITHUB_REPOSITORY" \
             --pr "$PR_NUMBER" --branch "$HEAD_REF" --prompt-file "$prompt" >"$out"
           test -s "$out"
-          gh pr comment "$PR_NUMBER" --body-file "$out"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$out"
 
   cleanup:
     # Remove the PR's worktree once it closes. The T3 thread stays. A worktree

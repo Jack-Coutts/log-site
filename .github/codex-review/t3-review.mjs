@@ -77,13 +77,18 @@ const modelSelection = {
 const runtimeMode = "auto";
 const interactionMode = "default";
 
-let threadId = stableUuid(`${args.repo}#${args.pr}`);
-const getThread = async (id) => (await api("GET", `/api/orchestration/threads/${id}`))?.thread;
-let thread = await getThread(threadId);
-if (thread?.deletedAt) {
-  // The PR's thread was deleted in the app; start a fresh one.
-  threadId = randomUUID();
-  thread = null;
+// A deleted thread's id can be created again, so the id never changes.
+const threadId = stableUuid(`${args.repo}#${args.pr}`);
+const getThread = async () => (await api("GET", `/api/orchestration/threads/${threadId}`))?.thread;
+let thread = await getThread();
+if (!thread) {
+  // The detail route 404s for archived threads too; unarchive if that is why.
+  try {
+    await dispatch({ type: "thread.unarchive", threadId });
+    thread = await getThread();
+  } catch {
+    // Not archived: missing or deleted, so it is created below.
+  }
 }
 
 if (!thread) {
@@ -113,7 +118,7 @@ if (!thread) {
 const deadline = Date.now() + Number(args.timeout) * 1000;
 
 // Wait for any turn already running in this thread (e.g. a follow-up).
-while ((await getThread(threadId)).session?.activeTurnId) {
+while ((await getThread()).session?.activeTurnId) {
   if (Date.now() > deadline) throw new Error("Timed out waiting for the thread to go idle");
   await sleep(5000);
 }
@@ -135,16 +140,23 @@ await dispatch({
 });
 console.error(`T3 thread ${threadId}: review turn started`);
 
+// The first turn requested after our dispatch is ours: the thread was idle
+// and any follow-up can only start after it. Pin its id so a later follow-up
+// turn's answer is never mistaken for the review.
+let turnId = null;
 while (Date.now() < deadline) {
-  await sleep(10000);
-  const t = await getThread(threadId);
-  const turn = t.latestTurn;
-  if (!turn || turn.requestedAt < requestedAfter) continue;
-  if (turn.state === "running") continue;
-  if (turn.state !== "completed") {
-    throw new Error(`Review turn ended as ${turn.state}: ${t.session?.lastError ?? "no error"}`);
+  await sleep(turnId ? 10000 : 2000);
+  const t = await getThread();
+  const latest = t.latestTurn;
+  if (!turnId) {
+    if (!latest || latest.requestedAt < requestedAfter) continue;
+    turnId = latest.turnId;
   }
-  const reply = t.messages.find((m) => m.id === turn.assistantMessageId)?.text;
+  if (latest.turnId === turnId && latest.state === "running") continue;
+  if (latest.turnId === turnId && latest.state !== "completed") {
+    throw new Error(`Review turn ended as ${latest.state}: ${t.session?.lastError ?? "no error"}`);
+  }
+  const reply = t.messages.filter((m) => m.role === "assistant" && m.turnId === turnId).at(-1)?.text;
   if (!reply) throw new Error("Review turn completed without a reply");
   process.stdout.write(reply);
   process.exit(0);
